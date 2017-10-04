@@ -1,2 +1,2 @@
 # ros_helios_hardware
-Hardware for teh catamaran HELIOS
+Hardware package for the catamaran HELIOS
