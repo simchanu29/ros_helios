@@ -22,15 +22,15 @@ Camera branché en USB
 ##### GPS RTK
 GPS RTK branchée en USB. 
 
-__Nécessite : __ `nmea_navsat_driver`
+ __Nécessite :__ `nmea_navsat_driver`
 
 ##### Hokuyo
 
-__Nécessite : __ `hokuyo_node`
+ __Nécessite :__ `hokuyo_node`
 
 ##### IMU (SBG)
 
-__Nécessite : __ `sbg_driver` version 1.0.7
+ __Nécessite :__ `sbg_driver` version 1.0.7
 
 ### Actuators
 
