@@ -45,7 +45,7 @@ class PWMBoard(Controller):
         # self.start()
         print self.getMin(0)
         print self.getMax(0)
-        
+
     def gen_dic_by_pin_keys(self, pwm_devices):
         """
         Transforme la table de hachage où on accède aux numéros des pins par le nom de l'appareil en une table de
