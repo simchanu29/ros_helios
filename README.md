@@ -10,8 +10,16 @@ catkin_init_workspace
 ```
 
 ##### Installation des packages ROS
+
+Installez les paquets suivants
 ```
 sudo apt-get install ros-kinetic-nmea-navsat-driver ros-kinetic-hokuyo-node ros-kinetic-usb-cam
+```
+
+Clonez dans le dossier src du workspace le driver de la sbg
+```
+wget https://github.com/ENSTABretagneRobotics/sbg_ros_driver/archive/1.0.7.tar.gz
+tar -xvf 1.0.7.tar.gz
 ```
 
 ### Interfaces
