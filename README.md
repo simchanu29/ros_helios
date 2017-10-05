@@ -1,7 +1,10 @@
 # ros_helios_hardware
 Hardware package for the catamaran HELIOS
 
+__ROS distribution :__ kinetic
+
 ### Installation
+On part du principe que les packages de base de ROS sont installés.
 
 ##### Configuration du workspace
 ```
@@ -13,14 +16,30 @@ catkin_init_workspace
 
 Installez les paquets suivants
 ```
-sudo apt-get install ros-kinetic-nmea-navsat-driver ros-kinetic-hokuyo-node ros-kinetic-usb-cam
+sudo apt-get install ros-kinetic-nmea-navsat-driver ros-kinetic-hokuyo-node ros-kinetic-usb-cam ros-kinetic-rviz-imu-plugin 
 ```
 
-Clonez dans le dossier src du workspace le driver de la sbg
+##### Configuration des règles udev
+Ces règles servent à identifier les appareils se connectant en USB.
+`WIP`
+
+##### Outils de debug externes
+Habituellement je les met dans un dossier `Logiciels`
 ```
-wget https://github.com/ENSTABretagneRobotics/sbg_ros_driver/archive/1.0.7.tar.gz
-tar -xvf 1.0.7.tar.gz
+cd && mkdir Logiciels && cd Logiciels
 ```
+
+ - Pololu maestro control center : 
+```
+wget https://www.pololu.com/file/download/maestro-linux-150116.tar.gz?file_id=0J315
+mv maestro-linux-150116.tar.gz?file_id=0J315 maestro-linux-150116.tar.gz
+tar -xvf maestro-linux-150116.tar.gz
+```
+Puis suivez les instructions du README.txt.
+
+ - SBG sdk
+ouvrez un navigateur et allez sur `https://files.sbg-systems.com/s/xg0mpvooQVqBgZR/authenticate`
+Mettez les identifiants SBG et téléchargez le SDK. Pour calibrer la SBG, il faut passer sou Windows et télécharger le sbgControl center avec ces même identifiants.
 
 ### Interfaces
 ##### Entrées
@@ -46,6 +65,11 @@ __Nécessite :__ `hokuyo_node`
 ##### IMU (SBG)
 
 __Nécessite :__ `sbg_driver` version 1.0.7
+
+__Tests :__
+ 
+ 1. Lancer `roslaunch sbg_driver sbg_ellipse.launch` et `rviz`.
+ 2. Dans Rviz ajouter une imu et spécifier le topic `/imu`
 
 ##### Pololu Maestro pwm board
 Carte pololu pour contrôler 2 moteurs T200 de BlueRobotics
