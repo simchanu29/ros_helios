@@ -7,6 +7,7 @@
 import rospy
 from std_msgs.msg import Float32
 from maestro.maestro import Controller
+# from maestro_sim.maestro import Controller # En cas de problème de driver, celui-ci est plus compréhensible et se debug bien
 from helios_command.msg import PwmCmd
 
 
@@ -42,10 +43,6 @@ class PWMBoard(Controller):
             command_type = self.devices_by_name[device]['command_type']
             self.setAccel(pin, self.types[command_type]['accel'])
 
-        # self.start()
-        print self.getMin(0)
-        print self.getMax(0)
-
     def gen_dic_by_pin_keys(self, pwm_devices):
         """
         Transforme la table de hachage où on accède aux numéros des pins par le nom de l'appareil en une table de
@@ -79,8 +76,10 @@ class PWMBoard(Controller):
 
         # Calcul de la commande en pwm
         cmd = (msg.command - range_zero) * 1000 / range_tot + 1500
+        print 'pwm sent to board :', int(cmd)
 
-        # Envoi de la commande
+        # Envoi de la commande (traduction en polulu 0-2000 = 0-8192)
+        cmd = int(cmd*4.096)
         print 'cmd sent to board :', int(cmd)
         self.setTarget(int(msg.pin), int(cmd))
 
