@@ -1,3 +1,8 @@
 <launch>
 
+    <node name="pwm_driver" pkg="helios_command" type="maestro_driver.py" output="screen">
+        <param name="port" value="/dev/ttyACM1"/>
+        <rosparam file="$(find helios_command)/config/pwmconfig.yaml" command="load"/>
+    </node>
+
 </launch>
