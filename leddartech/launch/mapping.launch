@@ -1,0 +1,32 @@
+<launch> 
+  <!-- Laser Pipeline -->
+  <node type="laser_scan_assembler" pkg="laser_assembler" name="my_assembler"> 
+      <remap from="scan" to="/leddar_scan"/>
+      <param name="max_scans" type="int" value="400" />
+      <param name="fixed_frame" type="string" value="/local_origin" />  <!-- value="/base_link" -->
+  </node>
+
+
+  <!-- Point cloud publisher -->
+  <node name="periodic_snapshotter" pkg="leddartech" type="periodic_snapshotter" respawn="false" output="screen" />
+
+  <!-- Point cloud converter -->
+<!--  <node name="point_cloud_conversion" pkg="leddartech" type="point_cloud_conversion" respawn="false" output="screen" />
+-->
+
+  <!-- Octomap Server -->
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+      <param name="resolution" value="0.05" />
+
+      <param name="frame_id" type="string" value="/local_origin" />       <!-- value="/base_link" -->
+
+      <param name="max_sensor_range" value="20.0" />
+
+      <param name="latch" value="false" />
+      <remap from="cloud_in" to="assembled_cloud" /> <!-- assembled_cloud in periodic_snapshotter-->
+
+  </node>
+
+  <!-- Rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen" />
+</launch>
