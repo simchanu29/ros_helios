@@ -5,4 +5,6 @@
         <rosparam file="$(find helios_command)/config/pwmconfig.yaml" command="load"/>
     </node>
 
+    <include file="$(find ros_teleop)/launch/teleop.launch"/>
+
 </launch>
