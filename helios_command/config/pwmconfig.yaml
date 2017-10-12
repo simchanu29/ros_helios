@@ -17,8 +17,8 @@ pwm_device:
 #    'pin': 11
 #    'command_type': 'servo90'
   'thruster_left':
-    'pin': 0
+    'pin': 12
     'command_type': 'motor100'
   'thruster_right':
-    'pin': 1
+    'pin': 13
     'command_type': 'motor100'
