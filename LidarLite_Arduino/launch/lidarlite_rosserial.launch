@@ -1,0 +1,11 @@
+<launch>
+
+  <node name="lidar_serial" pkg="rosserial_python" type="serial_node.py"
+    output="screen" respawn="false">
+      <!-- Set ROS parameters -->
+      <param name="port" value="/dev/ttyACM0"/>
+      <param name="baud" value="9600"/>
+  </node>
+
+
+</launch>
