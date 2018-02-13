@@ -1,0 +1,5 @@
+# Entry cloud
+sensor_msgs/PointCloud cloud
+---
+# Output cloud
+sensor_msgs/PointCloud2 cloud2

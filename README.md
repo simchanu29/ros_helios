@@ -16,8 +16,10 @@ catkin_init_workspace
 
 Installez les paquets suivants
 ```
-sudo apt-get install ros-kinetic-nmea-navsat-driver ros-kinetic-hokuyo-node ros-kinetic-usb-cam ros-kinetic-rviz-imu-plugin 
+sudo apt-get install ros-kinetic-nmea-navsat-driver ros-kinetic-hokuyo-node ros-kinetic-usb-cam ros-kinetic-rviz-imu-plugin ros-kinetic-laser-assembler
 ```
+
+Pour l'installation du leddar, voir le README dans le dossier correspondant
 
 ##### Configuration des règles udev
 Ces règles servent à identifier les appareils se connectant en USB.
