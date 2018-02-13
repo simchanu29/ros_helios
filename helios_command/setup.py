@@ -7,7 +7,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=['maestro', 'maestro_sim','geodesy'],
+    packages=['maestro_sim','geodesy'],
     package_dir={'': 'include'},
 )
 

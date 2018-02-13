@@ -1,3 +1,9 @@
 [submodule "ros_teleop"]
 	path = ros_teleop
 	url = http://github.com/simchanu29/ros_teleop
+[submodule "ros_maestro"]
+	path = ros_maestro
+	url = https://github.com/simchanu29/ros_maestro.git
+[submodule "ros_helios_config"]
+	path = ros_helios_config
+	url = https://github.com/simchanu29/ros_helios_config.git
