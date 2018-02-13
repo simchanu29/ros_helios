@@ -1,0 +1,7 @@
+<launch>
+  <arg name="port">
+
+  <include file="$(find sbg_ros_driver)/launch/sbg_ellipse.launch">
+    <arg name="uart_port" value="$(arg port)" />
+  </include>
+</launch>

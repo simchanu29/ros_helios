@@ -1,0 +1,19 @@
+
+# Ublox
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1546", ATTRS{idProduct}=="01a8", SYMLINK+="gps", GROUP="dialout", MODE="0660"
+
+#Leaddartech
+#ATTR{idVendor}=="28f1", ATTR{idProduct}=="0400", ATTR{manufacturer}=="LEDDARTECH", SYMLINK+="leaddartech", GROUP="dialout", MODE="0660"
+
+# Sondeur
+SUBSYSTEM=="tty", ATTRS{manufacturer}=="FTDI", ATTRS{product}=="US232R", ATTRS{serial}=="FTB3LHC4", ATTRS{serial}=="FTB3LHC4", ATTRS{product}=="US232R", SYMLINK+="sondeur", GROUP="dialout", MODE="0660"
+
+# SBG
+SUBSYSTEM=="tty", ATTRS{serial}=="FT0CQ26X", ATTRS{product}=="USB-RS232 Cable", SYMLINK+="sbg", GROUP="dialout", MODE="0660"
+
+# Pololu
+#SUBSYSTEM=="tty", ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="008b", SYMLINK+="pololu_serial", GROUP="dialout", MODE="0660"
+
+#Polulu Micro Maestro multiple-endpoint udev
+KERNEL=="ttyACM*", SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="008[0-f]", MODE="666", PROGRAM="/bin/bash -c '/bin/echo %p | /bin/grep -c :1.0", RESULT=="1", SYMLINK+="polulu_servo_serial", GROUP="dialout"
+KERNEL=="ttyACM*", SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1ffb", ATTRS{idProduct}=="008[0-f]", MODE="666", PROGRAM="/bin/bash -c '/bin/echo %p | /bin/grep -c :1.2", RESULT=="1", SYMLINK+="polulu_servo_ttl", GROUP="dialout"
