@@ -14,18 +14,19 @@ def cb_pwm(msg):
     print 'msg.angular.z :', msg.angular.z  # commande en float
 
     # Gestion de la commande
-    lin = msg.linear.x*10.0
-    ang = msg.angular.z*10.0
+    lin = msg.linear.x*100.0
+    ang = msg.angular.z*100.0
 
+    # HOTFIX se référer au fichier de config TODO
     # Calcul de la commande
     msg1 = PwmCmd()
     msg1.command = lin + ang
-    msg1.pin = 12
+    msg1.pin = 0
 
     msg2 = PwmCmd()
     msg2.command = lin - ang
-    msg2.pin = 13
-    
+    msg2.pin = 1
+
     # Envoi de la commande
     pub.publish(msg1)
     pub.publish(msg2)

@@ -1,14 +1,16 @@
 <launch>
 
     <node name="pwm_driver" pkg="helios_command" type="maestro_driver.py" output="screen">
-        <param name="port" value="/dev/ttyACM0"/>
+        <param name="port" value="/dev/polulu_servo_serial"/>
         <rosparam file="$(find helios_command)/config/pwmconfig.yaml" command="load"/>
-	</node>
+    </node>
     
-	<node name="cmd_interpreter" pkg="helios_command" type="cmd_interpreter.py"></node>	
+    <node name="cmd_interpreter" pkg="helios_command" type="cmd_interpreter.py"></node>	
 
-	<include file="$(find ros_teleop)/launch/teleop.launch"/>
+    <node name="gps" pkg="nmea_navsat_driver" type="nmea_navsat_driver"/>
 
     <include file="$(find ros_teleop)/launch/teleop.launch"/>
-
+    <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py">
+        <remap from="cmd_vel" to="cmd_twist"/>
+    </node>
 </launch>

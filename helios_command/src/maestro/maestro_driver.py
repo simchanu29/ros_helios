@@ -83,6 +83,25 @@ class PWMBoard(Controller):
         print 'cmd sent to board :', int(cmd)
         self.setTarget(int(msg.pin), int(cmd))
 
+    def hotfix_publisher(self, curr1, curr2, volt1, volt2):
+#        rospy.loginfo("getting positions")
+        volt1_val = self.getPosition(8)
+        curr1_val = self.getPosition(9)
+        volt2_val = self.getPosition(10)
+        curr2_val = self.getPosition(11)
+
+        volt1_val = volt1_val/255.75*5.0*15.7*0.91
+        volt2_val = volt2_val/255.75*5.0*15.7*0.91
+
+#        rospy.loginfo("Sensors values")
+        volt1.publish(volt1_val)
+#        rospy.loginfo(volt1_val)
+        volt2.publish(volt2_val)
+#        rospy.loginfo(volt2_val)
+        curr1.publish(curr1_val)
+#        rospy.loginfo(curr1_val)
+        curr2.publish(curr2_val)
+#        rospy.loginfo(curr2_val)
 
 if __name__ == '__main__':
 
@@ -96,8 +115,15 @@ if __name__ == '__main__':
     maestro = PWMBoard(port, pwm_devices, command_types)
     rospy.Subscriber('pwm_cmd', PwmCmd, maestro.cb_pwm)
 
+    # Hotfix TODO faire un truc plus propre
+    curr1 = rospy.Publisher('curr_1', Float32, queue_size=1)
+    volt1 = rospy.Publisher('volt_1', Float32, queue_size=1)
+    curr2 = rospy.Publisher('curr_2', Float32, queue_size=1)
+    volt2 = rospy.Publisher('volt_2', Float32, queue_size=1)
+
     while not rospy.is_shutdown():
         try:
             rospy.rostime.wallsleep(0.5)
+            maestro.hotfix_publisher(curr1, curr2, volt1, volt2)
         except rospy.ROSInterruptException:
             maestro.close()
