@@ -132,7 +132,9 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-#add_executable(maestro_driver src/maestro_driver.cpp)
+#add_executable(bub_path src/path.cpp)
+#add_executable(bub_local_converter src/local_converter.cpp)
+#add_executable(bub_regulation src/regulation.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
