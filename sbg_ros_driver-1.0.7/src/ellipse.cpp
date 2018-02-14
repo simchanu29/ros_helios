@@ -6,6 +6,7 @@
 #include "geometry_msgs/TwistStamped.h"
 #include <sbgEComLib.h>
 #include <sbgEComIds.h>
+#include <cmath>
 
 sensor_msgs::Imu imu_msg;
 sensor_msgs::NavSatFix nav_msg;
@@ -75,12 +76,12 @@ SbgErrorCode onLogReceived(SbgEComHandle *pHandle, SbgEComClass msgClass, SbgECo
 	  imu_altitude_msg.vector.y = pLogData->ekfNavData.undulation;
 
       new_nav_msg = true;
-      break;
-    case SBG_ECOM_LOG_SHIP_MOTION:
-    	nav_vel_msg.twist.linear.x = pLogData->shipMotionData.shipVel[0];
-    	nav_vel_msg.twist.linear.y = pLogData->shipMotionData.shipVel[1];
-    	nav_vel_msg.twist.linear.z = pLogData->shipMotionData.shipVel[2];
-      	new_nav_vel = true;
+
+	  nav_vel_msg.twist.linear.x = pLogData->ekfNavData.velocity[0]*cos(attitude_msg.vector.z);
+	  nav_vel_msg.twist.linear.y = pLogData->ekfNavData.velocity[1]*sin(attitude_msg.vector.z);
+	  nav_vel_msg.twist.linear.z = pLogData->ekfNavData.velocity[2];
+	  new_nav_vel = true;
+
       break;
 
     case SBG_ECOM_LOG_IMU_DATA:
@@ -205,9 +206,9 @@ int main(int argc, char **argv)
   errorCode = sbgEComCmdOutputSetConf(&comHandle, SBG_ECOM_OUTPUT_PORT_A, SBG_ECOM_CLASS_LOG_ECOM_0, SBG_ECOM_LOG_IMU_DATA, SBG_ECOM_OUTPUT_MODE_DIV_8);
   if (errorCode != SBG_NO_ERROR){ROS_WARN("sbgEComCmdOutputSetConf SBG_ECOM_LOG_IMU_DATA Error");}
 
-  // Enable getting velocity
-  errorCode = sbgEComCmdOutputSetConf(&comHandle, SBG_ECOM_OUTPUT_PORT_A, SBG_ECOM_CLASS_LOG_ECOM_0, SBG_ECOM_LOG_SHIP_MOTION, SBG_ECOM_OUTPUT_MODE_DIV_8);
-  if (errorCode != SBG_NO_ERROR){ROS_WARN("sbgEComCmdOutputSetConf SBG_ECOM_LOG_SHIP_MOTION Error");}
+  // // Enable getting velocity
+  // errorCode = sbgEComCmdOutputSetConf(&comHandle, SBG_ECOM_OUTPUT_PORT_A, SBG_ECOM_CLASS_LOG_ECOM_0, SBG_ECOM_LOG_SHIP_MOTION, SBG_ECOM_OUTPUT_MODE_DIV_8);
+  // if (errorCode != SBG_NO_ERROR){ROS_WARN("sbgEComCmdOutputSetConf SBG_ECOM_LOG_SHIP_MOTION Error");}
 
 	// Enable getting magnetometer data
   errorCode = sbgEComCmdOutputSetConf(&comHandle, SBG_ECOM_OUTPUT_PORT_A, SBG_ECOM_CLASS_LOG_ECOM_0, SBG_ECOM_LOG_MAG, SBG_ECOM_OUTPUT_MODE_DIV_8); // 8-> 25Hz, 20->10Hz
