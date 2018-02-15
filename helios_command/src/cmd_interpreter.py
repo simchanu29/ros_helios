@@ -33,10 +33,11 @@ def cb_pwm(msg):
 
 if __name__ == '__main__':
 
-    rospy.init_node('driver_maestro')
-    rospy.loginfo("driver_maestro Node Initialised")
+    rospy.init_node('cmd interpreter')
+    rospy.loginfo("driver Node Initialised")
 
-    sub = rospy.Subscriber('cmd_twist', Twist, cb_pwm)
+    sub = rospy.get_param("~sub_topic", "cmd_vel")
+    sub = rospy.Subscriber(sub , Twist, cb_pwm)
     pub = rospy.Publisher('pwm_cmd', PwmCmd, queue_size=1)
 
     rospy.spin()

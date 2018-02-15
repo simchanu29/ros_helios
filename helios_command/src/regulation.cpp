@@ -5,7 +5,7 @@
 #include "geometry_msgs/Twist.h"
 #include "geodesy/utility.h"
 #include "tf/transform_datatypes.h"
-#include "bubble_msgs/Line.h"
+#include "nav_msgs/Path.h"
 //#include <iostream>
 //#include <math.h>
 
@@ -42,12 +42,12 @@ public:
         pose_real.position.x = 0;
         pose_real.position.y = 0;
 
-        followedLine.prevWaypoint.x = 0; //x en metres
-        followedLine.prevWaypoint.y = 0; //y en metres
-        followedLine.prevWaypoint.z = 0;
-        followedLine.nextWaypoint.x = 0; //x en metres
-        followedLine.nextWaypoint.y = 0; //y en metres
-        followedLine.nextWaypoint.z = 0;
+        followedLine_prevwp_x = 0; //x en metres
+        followedLine_prevwp_y = 0; //y en metres
+        followedLine_prevwp_z = 0;
+        followedLine_nextwp_x = 0; //x en metres
+        followedLine_nextwp_y = 0; //y en metres
+        followedLine_nextwp_z = 0;
 
         angle_ping = -180; // -180 = non trouvé
 
@@ -69,9 +69,11 @@ public:
         twist_real.linear = msg->linear;
     }
 
-    void updateFollowedLine(const bubble_msgs::Line::ConstPtr& msg){
-        followedLine.nextWaypoint = msg->nextWaypoint;
-        followedLine.prevWaypoint = msg->prevWaypoint;
+    void updateFollowedLine(const nav_msgs::Path::ConstPtr& msg){
+        followedLine_prevwp_x = msg->poses[0].pose.position.x;
+        followedLine_prevwp_y = msg->poses[0].pose.position.y;
+        followedLine_nextwp_x = msg->poses[1].pose.position.x;
+        followedLine_nextwp_y = msg->poses[1].pose.position.y;
     }
 
     void updateCmdState(const std_msgs::Int8::ConstPtr& msg){
@@ -80,13 +82,13 @@ public:
 
     void lineFollow(){
 
-        double ax = followedLine.prevWaypoint.x;
+        double ax = followedLine_prevwp_x;
         printf("ax = [%f]\n",ax);
-        double ay = followedLine.prevWaypoint.y;
+        double ay = followedLine_prevwp_y;
         printf("ay = [%f]\n",ay);
-        double bx = followedLine.nextWaypoint.x;
+        double bx = followedLine_nextwp_x;
         printf("bx = [%f]\n",bx);
-        double by = followedLine.nextWaypoint.y;
+        double by = followedLine_nextwp_y;
         printf("by = [%f]\n",by);
         const double x = pose_real.position.x;
         printf("x = [%f]\n",x);
@@ -205,7 +207,12 @@ private:
     geometry_msgs::Twist twist_real;
     geometry_msgs::Pose pose_real;
     geometry_msgs::Twist cmd_vel;
-    bubble_msgs::Line followedLine;
+    double followedLine_prevwp_x;
+    double followedLine_prevwp_y;
+    double followedLine_prevwp_z;
+    double followedLine_nextwp_x;
+    double followedLine_nextwp_y;
+    double followedLine_nextwp_z;
 };
 
 
