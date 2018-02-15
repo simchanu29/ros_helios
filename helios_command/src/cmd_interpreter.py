@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
     sub = rospy.get_param("~sub_topic", "cmd_vel")
     rospy.Subscriber(sub , Twist, cb_pwm)
-    rospy.Subscriber('cmd_max_speed' , Float64, cb_max)
+    rospy.Subscriber('cmd_max_speed' , Float64, char.cb_max)
 
     pub_pwm = rospy.Publisher('pwm_cmd', PwmCmd, queue_size=1)
 
