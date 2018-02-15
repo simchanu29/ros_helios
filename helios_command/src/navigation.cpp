@@ -48,7 +48,6 @@ public:
         ROS_DEBUG("gps vel received");
     }
 
-
     void updateGpsFix(const sensor_msgs::NavSatFix::ConstPtr& msg){
       gpsfix.header = msg->header;
       gpsfix.status = msg->status;
@@ -58,13 +57,23 @@ public:
       gpsfix.position_covariance_type = msg->position_covariance_type;
       ROS_DEBUG("gps fix: ([%f], [%f])", gpsfix.longitude, gpsfix.latitude);
 
-        // Passage en coordonnées Lambert 93
+      // Passage en coordonnées Lambert 93
+      
     }
 
     void updateImu(const sensor_msgs::Imu::ConstPtr& msg){
-        twist_real.angular = msg->angular;
-        twist_real.linear = msg->linear;
+        imu.header = msg->header
+        imu.orientation = msg->orientation
+        imu.orientation_covariance = msg->orientation_covariance
+        imu.angular_velocity = msg->angular_velocity
+        imu.angular_velocity_covariance = msg->angular_velocity_covariance
+        imu.linear_acceleration = msg->linear_acceleration
+        imu.linear_acceleration_covariance = msg->linear_acceleration_covariance
+        ROS_DEBUG("gps fix: ([%f], [%f])", gpsfix.longitude, gpsfix.latitude);
+
     }
+
+
 
     void spin(){
 
