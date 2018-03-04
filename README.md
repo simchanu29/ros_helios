@@ -1,7 +1,8 @@
 # ros_helios_hardware
 Hardware package for the catamaran HELIOS
 
-__ROS distribution :__ kinetic
+![Status](https://img.shields.io/badge/Status-In%20Development-red.svg)
+![ROS](https://img.shields.io/badge/ROS-Kinetic--Kame-green.svg)
 
 ### Installation
 On part du principe que les packages de base de ROS sont installés.
