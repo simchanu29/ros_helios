@@ -1,0 +1,4 @@
+<launch>
+    <node name="regulation" pkg="helios_command" type="regulation"/>
+    <node name="navigation" pkg="helios_command" type="navigation"/>
+</launch>

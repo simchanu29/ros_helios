@@ -5,6 +5,7 @@
 /**
  * Version c du code python ci-dessous
  */
+#pragma once
 
 #include <fcntl.h>
 #include <stdio.h>

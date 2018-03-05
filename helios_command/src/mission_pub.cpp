@@ -16,10 +16,12 @@ int main(int argc, char **argv)
     ros::Rate loop(1);
     loop.sleep();
 
+    // Coordonnées ENU : x=EST y=NORD
+
     line.poses[0].pose.position.x = 0.0;
     line.poses[0].pose.position.y = 0.0;
-    line.poses[1].pose.position.x = 1.0;
-    line.poses[1].pose.position.y = 1.0;
+    line.poses[1].pose.position.x = 100.0;
+    line.poses[1].pose.position.y = 50.0;
     pub.publish(line);
 
     ros::spin();

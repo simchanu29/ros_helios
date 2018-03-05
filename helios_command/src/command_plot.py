@@ -80,6 +80,7 @@ class Plotter():
             del (self.trace[2][0])
 
     def process(self):
+        # Les angles représentés ici sont en ENU
 
         # print "====== Plotting boat"
         hull = geom.draw_kayak(self.theta, self.x, self.y)
@@ -108,7 +109,7 @@ if __name__ == '__main__':
     plot = Plotter()
 
     rospy.Subscriber('pose', Pose, plot.update_pose)
-    rospy.Subscriber('twist', Twist, plot.update_twist)
+    rospy.Subscriber('cmd_vel', Twist, plot.update_twist)
     rospy.Subscriber('path', Path, plot.update_planned_path)
     rospy.Subscriber('line', Path, plot.update_active_path)
 
