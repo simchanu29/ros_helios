@@ -134,7 +134,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(mission_pub src/mission_pub.cpp)
 add_executable(regulation src/regulation.cpp)
-add_executable(navigation src/navigation.cpp)
+#add_executable(navigation src/navigation.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -146,12 +146,12 @@ add_executable(navigation src/navigation.cpp)
 ## same as for the library above
 add_dependencies(regulation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(mission_pub ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(navigation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(navigation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(regulation ${catkin_LIBRARIES})
 target_link_libraries(mission_pub ${catkin_LIBRARIES})
-target_link_libraries(navigation ${catkin_LIBRARIES})
+#target_link_libraries(navigation ${catkin_LIBRARIES})
 
 #############
 ## Install ##
