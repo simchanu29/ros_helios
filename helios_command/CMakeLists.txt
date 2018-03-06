@@ -132,8 +132,9 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(bub_mission_pub src/mission_pub.cpp)
-add_executable(bub_regulation src/regulation.cpp)
+add_executable(mission_pub src/mission_pub.cpp)
+add_executable(regulation src/regulation.cpp)
+#add_executable(navigation src/navigation.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -143,12 +144,14 @@ add_executable(bub_regulation src/regulation.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(bub_regulation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(bub_mission_pub ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(regulation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(mission_pub ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(navigation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(bub_regulation ${catkin_LIBRARIES})
-target_link_libraries(bub_mission_pub ${catkin_LIBRARIES})
+target_link_libraries(regulation ${catkin_LIBRARIES})
+target_link_libraries(mission_pub ${catkin_LIBRARIES})
+#target_link_libraries(navigation ${catkin_LIBRARIES})
 
 #############
 ## Install ##

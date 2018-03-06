@@ -24,15 +24,15 @@ bool new_gps_msg;
 bool new_mag_msg;
 bool new_nav_vel;
 
-unsigned int mask_rtk_status;
+unsigned int mask_rtk_status = 0x0FC0; // 32 bits
 
-unsigned int createMask(unsigned int a, unsigned int b)
-{
-   unsigned int r = 0;
-   for (unsigned int i=a; i<=b; i++)
-       r |= 1 << i;
-   return r;
-}
+// unsigned int createMask(unsigned int a, unsigned int b) // (6,11)
+// {
+//    unsigned int r = 0;
+//    for (unsigned int i=a; i<=b; i++)
+//        r |= 1 << i;
+//    return r;
+// }
 
 /*!
  *  Callback definition called each time a new log is received.
@@ -70,7 +70,6 @@ SbgErrorCode onLogReceived(SbgEComHandle *pHandle, SbgEComClass msgClass, SbgECo
 	  nav_msg.position_covariance[4] = pLogData->ekfNavData.positionStdDev[1];
 	  nav_msg.position_covariance[8] = pLogData->ekfNavData.positionStdDev[2];
 	  nav_msg.position_covariance_type = nav_msg.COVARIANCE_TYPE_DIAGONAL_KNOWN;
-	  nav_msg.status.status = (mask_rtk_status & pLogData->ekfNavData.status)>>6;
 
 	  imu_altitude_msg.vector.x = pLogData->ekfNavData.position[2];
 	  imu_altitude_msg.vector.y = pLogData->ekfNavData.undulation;
@@ -137,7 +136,8 @@ SbgErrorCode onLogReceived(SbgEComHandle *pHandle, SbgEComClass msgClass, SbgECo
 		// 8 SBG_ECOM_POS_PPP_FLOAT Precise Point Positioning with float ambiguities
 		// 9 SBG_ECOM_POS_PPP_INT Precise Point Positioning with fixed ambiguities
 		// 10 SBG_ECOM_POS_FIXED Fixed location solution position
-      	gps_msg.status.status = (mask_rtk_status & pLogData->gpsPosData.status)>>6;
+      	gps_msg.status.status = (pLogData->gpsPosData.status & mask_rtk_status) >> 6;
+
     	new_gps_msg = true;
     	break;
     	
@@ -168,8 +168,6 @@ int main(int argc, char **argv)
 
   n.param<std::string>("uart_port", uart_port, "/dev/sbg");
   n.param<int>("uart_baud_rate", uart_baud_rate, 115200);
-
-  mask_rtk_status = createMask(6,11);
 
     // ********************* Initialize the SBG  *********************
   SbgEComHandle       comHandle;

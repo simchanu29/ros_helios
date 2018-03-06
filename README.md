@@ -1,7 +1,8 @@
 # ros_helios_hardware
 Hardware package for the catamaran HELIOS
 
-__ROS distribution :__ kinetic
+![Status](https://img.shields.io/badge/Status-In%20Development-red.svg)
+![ROS](https://img.shields.io/badge/ROS-Kinetic--Kame-green.svg)
 
 ### Installation
 On part du principe que les packages de base de ROS sont installés.
@@ -86,3 +87,6 @@ Carte pololu pour contrôler 2 moteurs T200 de BlueRobotics
 
  - Channel 0 : propulseur gauche
  - Channel 1 : propulseur droit
+
+### Notes de developpement
+ros_helios_config ne devrait pas être un repository séparé de ros_helios_hardware. Il faudrait l'enlever en tant que submodule et ajouter directement les fichiers. C'est tout simplement parce-que on utilisera pas la config d'Helios en dehors de ros_helios_hardware.

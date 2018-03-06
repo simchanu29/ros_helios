@@ -20,10 +20,10 @@ class Regulation
 public:
     Regulation(){
         // Subscribers
-        poseReal_sub = node.subscribe("pose_est", 1, &Regulation::updatePoseReal, this);
-        twistReal_sub = node.subscribe("twist_est", 1, &Regulation::updateTwistReal, this);
-        obj_sub = node.subscribe("line", 1, &Regulation::updateFollowedLine, this);
-        cmdState_sub = node.subscribe("cmd_state", 1, &Regulation::updateCmdState, this);
+        node.subscribe("pose_est", 1, &Regulation::updatePoseReal, this);
+        node.subscribe("twist_est", 1, &Regulation::updateTwistReal, this);
+        node.subscribe("line", 1, &Regulation::updateFollowedLine, this);
+        node.subscribe("cmd_state", 1, &Regulation::updateCmdState, this);
 
         // Publishers
         cmdVel_pub = node.advertise<geometry_msgs::Twist>("cmd_vel", 1);
@@ -48,8 +48,6 @@ public:
         followedLine_nextwp_x = 0; //x en metres
         followedLine_nextwp_y = 0; //y en metres
         followedLine_nextwp_z = 0;
-
-        angle_ping = -180; // -180 = non trouvé
 
         const tf::Quaternion q = tf::createQuaternionFromYaw(0);
         pose_real.orientation.z = q.z();
@@ -190,19 +188,11 @@ private:
     // Node
     ros::NodeHandle node;
 
-    // Suscribers
-    ros::Subscriber cmdState_sub;
-    ros::Subscriber twistReal_sub;
-    ros::Subscriber anglePing_sub;
-    ros::Subscriber obj_sub;
-    ros::Subscriber poseReal_sub;
-
     // Publishers
     ros::Publisher cmdVel_pub;
 
     // Internal variables
     int cmd_state;
-    double angle_ping;
     geometry_msgs::Twist pose;
     geometry_msgs::Twist twist_real;
     geometry_msgs::Pose pose_real;
@@ -220,7 +210,7 @@ int main(int argc, char **argv)
 {
     // Node initialization
     std::cout << "Node initialization " << std::endl;
-    ros::init(argc, argv, "bubble_reg");
+    ros::init(argc, argv, "regulation");
 
     Regulation regulation;
 

@@ -30,11 +30,10 @@ class Model_char(object):
         np.clip(ang, -self.max_cmd, self.max_cmd)
 
         # Calcul de la différence en absolu
-        diff = np.abs(lin) + np.abs(ang) - self.max_cmd
+        diff = max(np.abs(lin) + np.abs(ang) - self.max_cmd, 0.0)
 
-        m1 = lin + ang - np.sign(lin)*diff
-        m2 = lin - ang - np.sign(lin)*diff
-
+        m1 = np.clip(lin - ang - np.sign(lin)*diff, -self.max_cmd, self.max_cmd)
+        m2 = np.clip(lin + ang - np.sign(lin)*diff, -self.max_cmd, self.max_cmd)
         return [m1, m2]
 
     def cb_max(self, msg):
@@ -46,8 +45,8 @@ def cb_pwm(msg):
     print 'msg.angular.z :', msg.angular.z  # commande en float
 
     # Gestion de la commande
-    # lin = msg.linear.x*100.0
-    # ang = msg.angular.z*100.0
+    lin = msg.linear.x
+    ang = msg.angular.z
     cmd = char.command(lin, ang)
 
     # HOTFIX se référer au fichier de config TODO
