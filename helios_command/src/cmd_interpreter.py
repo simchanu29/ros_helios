@@ -27,7 +27,7 @@ class Model_char(object):
         ang = ang*self.coeff_rot
 
         # bornage de la commande angulaire par le maximum
-        np.clip(ang, self.max_cmd, -self.max_cmd)
+        np.clip(ang, -self.max_cmd, self.max_cmd)
 
         # Calcul de la différence en absolu
         diff = np.abs(lin) + np.abs(ang) - self.max_cmd
