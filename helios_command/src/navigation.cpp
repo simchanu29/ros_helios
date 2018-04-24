@@ -10,59 +10,20 @@
 #include "tf/transform_datatypes.h"
 #include "nav_msgs/Path.h"
 
-#include <proj_api.h>
-
 #include "geodesy/utility.h"
 //#include <proj_api.h>
 
 //#include <iostream>
 //#include <math.h>
 
-
-struct Coordinates{
-    double x;
-    double y;
-};
-
-Coordinates latlon2lamb(double lat, double lon){
-
-    Coordinates coord;
-    projPJ pj_lambert, pj_latlong;
-
-
-
-    if (!(pj_lambert = pj_init_plus("+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ")))
-    {
-        printf("error lambert \n");
-        exit(1);
-    }
-
-    if (!(pj_latlong = pj_init_plus("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")))
-    {
-        printf("error latlong \n");
-        exit(1);
-    }
-
-    lat *= DEG_TO_RAD;
-    lon *= DEG_TO_RAD;
-
-    pj_transform(pj_latlong, pj_lambert, 1, 1, &lat, &lon, NULL );
-
-    //printf("X: %lf \nY: %lf\n", x, y);
-    coord.x = lat;
-    coord.y = lon;
-    return coord;
-}
-
-
 class Navigation
 {
 public:
     Navigation(){
         // Subscribers
-        node.subscribe("/gps/fix", 1, &Navigation::updateGpsFix, this);
-        node.subscribe("/gps/vel", 1, &Navigation::updateGpsVel, this);
-        node.subscribe("imu", 1, &Navigation::updateImu, this);
+        sub_fix = node.subscribe("/gps/fix", 1, &Navigation::updateGpsFix, this);
+        sub_vel = node.subscribe("/gps/vel", 1, &Navigation::updateGpsVel, this);
+        sub_imu = node.subscribe("imu", 1, &Navigation::updateImu, this);
 
         // Publishers
         pose_pub = node.advertise<geometry_msgs::Pose>("pose_est", 1);
@@ -86,8 +47,8 @@ public:
         pose.orientation.x = q.x();
         pose.orientation.y = q.y();
 
-        lambert_coord.x = 0;
-        lambert_coord.y = 0;
+        meters_coord.x = 0;
+        meters_coord.y = 0;
     }
 
     void updateGpsVel(const geometry_msgs::TwistStamped::ConstPtr& msg){
@@ -106,8 +67,10 @@ public:
       gpsfix.position_covariance_type = msg->position_covariance_type;
       ROS_DEBUG("gps fix: ([%f], [%f])", gpsfix.longitude, gpsfix.latitude);
 
-      // Passage en coordonnées Lambert 93
-      lambert_coord = latlon2lamb(gpsfix.latitude, gpsfix.longitude);
+      // Passage en coordonnées meters
+      meters_coord = latlon2meters(gpsfix.latitude, gpsfix.longitude);
+//      meters_coord.x = gpsfix.longitude;
+//      meters_coord.y = gpsfix.latitude;
     }
 
     void updateImu(const sensor_msgs::Imu::ConstPtr& msg){
@@ -126,8 +89,8 @@ public:
         // TODO : faire la fusion de donnée avec un filtre de kalman
 
         // position
-        pose.position.x = lambert_coord.x;
-        pose.position.y = lambert_coord.y;
+        pose.position.x = meters_coord.x;
+        pose.position.y = meters_coord.y;
         pose.position.z = gpsfix.altitude;
         pose.orientation = imu.orientation;
 
@@ -164,6 +127,11 @@ private:
     // Node
     ros::NodeHandle node;
 
+    // Subscriber
+    ros::Subscriber sub_fix;
+    ros::Subscriber sub_vel;
+    ros::Subscriber sub_imu;
+
     // Publishers
     ros::Publisher pose_pub;
     ros::Publisher twist_pub;
@@ -176,7 +144,7 @@ private:
     sensor_msgs::NavSatFix gpsfix;
     geometry_msgs::TwistStamped gpsvel;
 
-    Coordinates lambert_coord;
+    Coordinates meters_coord;
 };
 
 

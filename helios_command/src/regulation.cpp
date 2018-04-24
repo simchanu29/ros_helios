@@ -11,7 +11,7 @@
 
 enum State{
     manual = 0,
-    blackBoxResearch = 1,
+    linefollowing = 1,
     stationKeeping = 2
 };
 
@@ -20,10 +20,10 @@ class Regulation
 public:
     Regulation(){
         // Subscribers
-        node.subscribe("pose_est", 1, &Regulation::updatePoseReal, this);
-        node.subscribe("twist_est", 1, &Regulation::updateTwistReal, this);
-        node.subscribe("line", 1, &Regulation::updateFollowedLine, this);
-        node.subscribe("cmd_state", 1, &Regulation::updateCmdState, this);
+        sub_pose = node.subscribe("pose_est", 1, &Regulation::updatePoseReal, this);
+        sub_twist = node.subscribe("twist_est", 1, &Regulation::updateTwistReal, this);
+        sub_line = node.subscribe("line", 1, &Regulation::updateFollowedLine, this);
+        sub_state = node.subscribe("cmd_state", 1, &Regulation::updateCmdState, this);
 
         // Publishers
         cmdVel_pub = node.advertise<geometry_msgs::Twist>("cmd_vel", 1);
@@ -154,7 +154,7 @@ public:
     void updateCommand(){
         printf(" --== Updating command ==-- \n");
 
-        if(cmd_state==blackBoxResearch){
+        if(cmd_state==linefollowing){
             lineFollow();
         } else if(cmd_state==stationKeeping){
             stationKeep();
@@ -187,6 +187,12 @@ public:
 private:
     // Node
     ros::NodeHandle node;
+
+    // Subscriber
+    ros::Subscriber sub_pose;
+    ros::Subscriber sub_twist;
+    ros::Subscriber sub_line;
+    ros::Subscriber sub_state;
 
     // Publishers
     ros::Publisher cmdVel_pub;

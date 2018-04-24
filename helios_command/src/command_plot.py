@@ -26,21 +26,25 @@ class Plotter():
         self.cmd_vx = 0.0
         self.cmd_theta = 0.0
         self.path = [[], []]
+        self.last_wp = Pose().position
+        self.next_wp = Pose().position
 
         # Init plot
         self.win = plt.GraphicsWindow()
-        self.fig = self.win.addPlot(title="Display simu")
+        self.fig = self.win.addPlot(title="Display command")
         self.fig.setXRange(-5, 5)
         self.fig.setYRange(-5, 5)
+
+        # Init path_planned
+        self.plt_planned_path = self.fig.plot()
+        # Init path_active
+        self.plt_active_path = self.fig.plot()
+        # Init boat
         self.plt_boat = self.fig.plot()
         # Init trace
         self.plt_trace = self.fig.plot()
         # Init cmd
         self.plt_twist = self.fig.plot()
-        # Init path_planned
-        self.plt_planned_path = self.fig.plot()
-        # Init path_active
-        self.plt_active_path = self.fig.plot()
 
         self.trace = [[], [], []]
 
@@ -48,10 +52,10 @@ class Plotter():
         self.pose = msg
         self.x = self.pose.position.x
         self.y = self.pose.position.y
-        self.theta = tf.transformations.euler_from_quaternion((self.pose.pose.orientation.x,
-                                                               self.pose.pose.orientation.y,
-                                                               self.pose.pose.orientation.z,
-                                                               self.pose.pose.orientation.w))[2]
+        self.theta = tf.transformations.euler_from_quaternion((self.pose.orientation.x,
+                                                               self.pose.orientation.y,
+                                                               self.pose.orientation.z,
+                                                               self.pose.orientation.w))[2]
 
     def update_twist(self, msg):
         self.twist = msg
@@ -64,8 +68,8 @@ class Plotter():
             self.path[1].append(pose.pose.position.y)
 
     def update_active_path(self, msg):
-        self.last_wp = self.poses[0].pose.position
-        self.next_wp = self.poses[1].pose.position
+        self.last_wp = msg.poses[0].pose.position
+        self.next_wp = msg.poses[1].pose.position
 
     def update_trace(self):
         MAX_SIZE = 500
@@ -82,6 +86,12 @@ class Plotter():
     def process(self):
         # Les angles représentés ici sont en ENU
 
+        # print "====== Plotting planned path"
+        self.plt_planned_path.setData(self.path[0], self.path[1], pen=plt.mkPen('l', width=1))
+
+        # print "====== Plotting active path"
+        self.plt_active_path.setData([self.last_wp.x, self.next_wp.x], [self.last_wp.y, self.next_wp.y], pen=plt.mkPen('r', width=2))
+
         # print "====== Plotting boat"
         hull = geom.draw_kayak(self.theta, self.x, self.y)
         self.plt_boat.setData(hull[0], hull[1], pen=plt.mkPen('l', width=2))
@@ -97,18 +107,12 @@ class Plotter():
         self.plt_twist.setData(vec[0],
                                vec[1], pen=plt.mkPen('b', width=2))
 
-        # print "====== Plotting planned path"
-        self.plt_planned_path.setData(self.path[0], self.path[1], pen=plt.mkPen('l', width=1))
-
-        # print "====== Plotting active path"
-        self.plt_planned_path.setData([self.last_wp.x, self.next_wp.x], [self.last_wp.y, self.next_wp.y], pen=plt.mkPen('r', width=2))
-
 if __name__ == '__main__':
-    rospy.init_node('simu_plot')
+    rospy.init_node('command_plot')
 
     plot = Plotter()
 
-    rospy.Subscriber('pose', Pose, plot.update_pose)
+    rospy.Subscriber('pose_est', Pose, plot.update_pose)
     rospy.Subscriber('cmd_vel', Twist, plot.update_twist)
     rospy.Subscriber('path', Path, plot.update_planned_path)
     rospy.Subscriber('line', Path, plot.update_active_path)

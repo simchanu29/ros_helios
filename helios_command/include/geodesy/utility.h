@@ -4,7 +4,7 @@
 #pragma once
 
 #include <cmath>
-//#include "proj_api.h"
+#include <proj_api.h>
 
 #define CONVERSION_FACTOR_GPS 1852.0 // in meters/min
 #define RAD_2_DEG 1.0/M_PI*180.0
@@ -55,35 +55,42 @@ static double distance(double x1, double y1, double x2, double y2){
     return sqrt( pow(x2-x1,2) + pow(y2-y1,2) );
 }
 
-//struct Coordinates{
-//    double x;
-//    double y;
-//};
 
-//static Coordinates latlon2lamb(double lat, double lon){
-//
-//    Coordinates coord;
-//    projPJ pj_lambert, pj_latlong;
-//
-//    if (!(pj_lambert = pj_init_plus("+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ")))
-//    {
-//        printf("error lambert \n");
-//        exit(1);
-//    }
-//
-//    if (!(pj_latlong = pj_init_plus("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")))
-//    {
-//        printf("error latlong \n");
-//        exit(1);
-//    }
-//
-//    lat *= DEG_2_RAD;
-//    lon *= DEG_2_RAD;
-//
-//    pj_transform(pj_latlong, pj_lambert, 1, 1, &lat, &lon, NULL );
-//
-//    //printf("X: %lf \nY: %lf\n", x, y);
-//    coord.x = lat;
-//    coord.y = lon;
-//    return coord;
-//}
+struct Coordinates{
+    double x;
+    double y;
+};
+
+Coordinates latlon2meters(double lat, double lon){
+
+    Coordinates coord;
+    projPJ pj_lambert, pj_latlong, pj_utm30N;
+
+    if (!(pj_lambert = pj_init_plus("+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ")))
+    {
+        printf("error lambert \n");
+        exit(1);
+    }
+
+    if (!(pj_utm30N = pj_init_plus("+proj=utm +zone=30 +north +ellps=WGS84 +datum=WGS84 +units=m +no_defs")))
+    {
+        printf("error utm30N \n");
+        exit(1);
+    }
+
+    if (!(pj_latlong = pj_init_plus("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")))
+    {
+        printf("error latlong \n");
+        exit(1);
+    }
+
+    lat *= DEG_TO_RAD;
+    lon *= DEG_TO_RAD;
+
+    pj_transform(pj_latlong, pj_utm30N, 1, 1, &lat, &lon, nullptr);
+
+    //printf("X: %lf \nY: %lf\n", x, y);
+    coord.x = lat;
+    coord.y = lon;
+    return coord;
+}

@@ -5,7 +5,7 @@
 
 import rospy
 import numpy as np
-from helios_command.msg import PwmCmd
+from ros_maestro.msg import PwmCmd
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int64, Float64
 
@@ -20,7 +20,7 @@ class Model_char(object):
 
     def command(self, lin, ang):
         """
-        lin et ang vont de -1.0 à 1.0
+        lin et ang vont de -1.0 à 1.0x
         """
         # modification lineaire des commande
         lin = lin*self.coeff_lin
