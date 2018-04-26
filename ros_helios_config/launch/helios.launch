@@ -1,0 +1,49 @@
+<launch>
+
+    <!--autonomie de mission-->
+    <include file="$(find helios_command)/launch/autonomy.launch"/>
+
+    <!--controle commande-->
+    <node name="cmd_interpreter" pkg="helios_command" type="cmd_interpreter.py">
+        <param name="sub_topic" value="cmd_vel"/>
+        <param name="maximum" value="0.7"/>
+        <param name="coeff_rot" value="1.0"/>
+        <param name="coeff_lin" value="1.0"/>
+    </node>
+
+    <!--driver actionneurs-->
+    <include file="$(find ros_maestro)/launch/maestro.launch">
+        <arg name="port" value="/dev/pololu_servo_serial"/>
+        <arg name="config_path" value="$(find ros_helios_config)/config/ros_maestro/pwmconfig.yaml"/>
+    </include>
+
+    <node name="relay_toogle" pkg="ros_maestro" type="relay_driver.py"/>
+
+    <!--capteurs internes-->
+    <node name="attopilot1" pkg="ros_maestro" type="attopilot_driver.py">
+        <param name="~volt_topic" value="battery1_voltage_raw"/>
+        <param name="~curr_topic" value="battery1_current_raw"/>
+    </node>
+
+    <node name="attopilot2" pkg="ros_maestro" type="attopilot_driver.py">
+        <param name="~volt_topic" value="battery2_voltage_raw"/>
+        <param name="~curr_topic" value="battery2_current_raw"/>
+    </node>
+
+    <!--capteurs externes-->
+    <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver">
+         <param name="port" value="/dev/gps"/>
+         <param name="baud" value="9600"/>
+    </node>
+
+    <include file="$(find sbg_ros_driver)/launch/sbg_ellipse.launch">
+        <arg name="port" value="sbg"/>
+    </include>
+
+    <!--teleoperation-->
+    <include file="$(find ros_teleop)/launch/teleop.launch">
+        <arg name="config_path" value="$(find ros_helios_config)/config/ros_teleop/keyconfig.yaml"/>
+    </include>
+    <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py"></node>
+
+</launch>

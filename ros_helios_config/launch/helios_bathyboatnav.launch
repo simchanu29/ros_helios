@@ -1,0 +1,26 @@
+<launch>
+
+    <include file="$(find sbg_driver)/launch/sbg_ellipse_helios.launch"/>
+<!--
+    <node name="mission_interpreter" pkg="BathyBoatNav" type="mission_interpreter.py" output="screen" />
+-->
+    <node name="convertLambert" pkg="BathyBoatNav" type="convert2Lambert.py" output="screen"/>
+
+    <node name="regul_helios" pkg="BathyBoatNav" type="regul_helios" output="screen" >
+        <param name="Name_boat" type="string" value="boat"/>
+    </node>
+
+    <!-- Args server : Port (int) | Sender (boolean) true is send false if read -->
+
+    <node name="tcp_server_send" pkg="BathyBoatNav" type="tcp_server" args="29200 true" output="screen" />
+    <node name="tcp_server_recv" pkg="BathyBoatNav" type="tcp_server" args="22300 false" output="screen" />
+
+    <include file="$(find ros_helios_config)/launch/command.launch"></include>
+
+    </node>
+
+    <node name="rosbag_record_diag" pkg="rosbag" type="record"
+            args="record -o /home/guerledan4/bags/helios -a"/>
+
+</launch>
+1

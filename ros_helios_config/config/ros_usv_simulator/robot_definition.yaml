@@ -1,0 +1,128 @@
+# Config du simulateur
+
+command_types:
+
+  'servo180':
+    range: [-90,90]
+
+  'servo90':
+    range: [-45,45]
+
+  'motor100':
+    range: [-100,100]
+
+device_types:
+
+  motor_helios:
+    node_type: 'simu_dynamique_thruster.py'
+    motor_type: 'propeller' # Or propeller
+    max_force: 5
+    orientable: False
+    pre_actuator: True
+
+  imu_razor:
+    node_type: 'simu_imu.py'
+    baudrate: 57600
+
+  gps_globalsat_usb:
+    node_type: 'simu_gps.py'
+    baudrate: 9600
+
+  pwm_board:
+    node_type: 'simu_maestro.py'
+    output_number: 24
+
+  not_simulated: 'None'
+
+simulation:
+  dt: 0.05
+  dt_reel: 0.05
+  duration: 100000
+  environnement:
+    fluid_mass_density: 1000 # kg/m3
+    authorized_zone:
+      x: [-50, 50, 50,-50]
+      y: [-50,-50, 50, 50]
+
+#==========================================================
+# Config du robot
+
+robot:
+
+  simulated_characteristics:
+    position:
+      gps_lat: 48.33489
+      gps_lon: -4.36421
+      x: 398898
+      y: 5354422
+      z: 0.0
+    orientation:
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    speed:
+      v_x: 0.0
+      v_y: 0.0
+      v_z: 0.0
+      v_roll: 0.0
+      v_pitch: 0.0
+      v_yaw: 0.0
+
+  characteristics:
+    axis_offset: [0,0,0]
+    length: 1.2
+    height: 0.3
+    width: 0.6
+    mass: 20.0 # kg
+    # TODO : intertial_matrix: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+  actuators:
+
+    motor_left:
+      type: 'motor_helios'
+      command:
+        type: 'motor100'
+        pwm:
+          pin: 0
+      orientation: 0
+      position:
+        x: -0.5
+        y: -0.4
+        z: 0.0
+
+    motor_right:
+      type: 'motor_helios'
+      command:
+        type: 'motor100'
+        pwm:
+          pin: 1
+      orientation: 0
+      position:
+        x: -0.5
+        y: 0.4
+        z: 0.0
+
+    servo_cam_azimuth:
+      type: 'not_simulated'
+      command:
+        type: 'servo90'
+        pwm:
+          pin: 10
+
+    servo_cam_declinaison:
+      type: 'not_simulated'
+      command:
+        type: 'servo90'
+        pwm:
+          pin: 11
+
+  pre_actuators:
+
+    maestro:
+      type: 'pwm_board'
+
+  sensors:
+    imu:
+      type: 'imu_razor'
+    gps:
+      type: 'gps_globalsat_usb'

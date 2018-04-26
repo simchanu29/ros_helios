@@ -4,9 +4,6 @@
 [submodule "ros_maestro"]
 	path = ros_maestro
 	url = https://github.com/simchanu29/ros_maestro.git
-[submodule "ros_helios_config"]
-	path = ros_helios_config
-	url = https://github.com/simchanu29/ros_helios_config.git
 [submodule "ros_usv_simulator"]
 	path = ros_usv_simulator
 	url = https://github.com/simchanu29/ros_usv_simulator.git

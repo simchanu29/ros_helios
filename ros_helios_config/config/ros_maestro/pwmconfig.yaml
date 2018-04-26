@@ -1,0 +1,41 @@
+data_type:
+  'servo180':
+    type: 'output'
+    range: [-90,90]
+    accel: 10
+  'servo90':
+    type: 'output'
+    range: [-45,45]
+    accel: 10
+  'motor100':
+    type: 'output'
+    range: [-100,100]
+    accel: 10
+  'attopilot':
+    type: 'input'
+
+device:
+#  'servo_cam_azimuth':
+#    'pin': 10
+#    'command_type': 'servo90'
+#  'servo_cam_declinaison':
+#    'pin': 11
+#    'command_type': 'servo90'
+  'thruster_left':
+    'pin': 0
+    'data_type': 'motor100'
+  'thruster_right':
+    'pin': 1
+    'data_type': 'motor100'
+  'battery1_voltage_raw':
+    'pin': 8
+    'data_type': 'attopilot'
+  'battery1_current_raw':
+    'pin': 9
+    'data_type': 'attopilot'
+  'battery2_voltage_raw':
+    'pin': 10
+    'data_type': 'attopilot'
+  'battery2_current_raw':
+    'pin': 11
+    'data_type': 'attopilot'

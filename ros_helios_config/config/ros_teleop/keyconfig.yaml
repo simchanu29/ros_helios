@@ -1,0 +1,122 @@
+# Hardcoded : link to the code
+topic_types:
+  'switch_teleop':
+    # Pour rappel
+    'usage': 'No value'
+    'structure': ['type']
+    # Utile pour le code
+    'import': ['std_msgs.msg', 'String']
+
+  'twist':
+    # Pour rappel
+    'usage': ['lin_x','lin_y','ang_z']
+    'structure': ['type', 'range_lin', 'range_ang', 'precision']
+    # Utile pour le code
+    'import': ['geometry_msgs.msg', 'Twist']
+  'wrench':
+    # Pour rappel
+    'usage': ['lin_x','lin_y','ang_z']
+    'structure': ['type', 'range_lin', 'range_ang', 'precision']
+    # Utile pour le code
+    'import': ['geometry_msgs.msg', 'Wrench']
+  'position':
+    # Pour rappel
+    'usage': 'position'
+    'structure': ['type', 'range', 'precision']
+    # Utile pour le code
+    'import': ['std_msgs.msg', 'Float32']
+
+# Modifiable
+topic_map:
+  'switch_teleop':
+    'type': 'switch_teleop'
+
+  'twist':
+    'type': 'twist'
+    'range_lin': 1.0
+    'range_ang': 1.0
+    'precision': 20.0
+  'wrench':
+    'type': 'wrench'
+    'range_lin': 10.0
+    'range_ang': 10.0
+    'precision': 20.0
+  'position_servo1':
+    'type': 'position'
+    'range': 90.0
+    'precision': 100.0
+  'position_servo2':
+    'type': 'position'
+    'range': 90.0
+    'precision': 100.0
+
+key_map:
+  # switch teleop key
+  't':
+    topic: 'switch_teleop'
+
+  # Twist keys
+  ' ':
+    topic: 'twist'
+    value: ['STOP','STOP','STOP']
+  'r':
+    topic: 'twist'
+    value: ['BACK','BACK','BACK']
+  'z':
+    topic: 'twist'
+    value: [1,0,0]
+  's':
+    topic: 'twist'
+    value: [-1,0,0]
+  'q':
+    topic: 'twist'
+    value: [0,0,1]
+  'd':
+    topic: 'twist'
+    value: [0,0,-1]
+  'a':
+    topic: 'twist'
+    value: [0,0,1]
+  'e':
+    topic: 'twist'
+    value: [0,0,-1]
+
+  # Wrench keys
+  '5':
+    topic: 'wrench'
+    value: ['STOP','STOP','STOP']
+  '0':
+    topic: 'wrench'
+    value: ['BACK','BACK','BACK']
+  '8':
+    topic: 'wrench'
+    value: [1,0,0]
+  '2':
+    topic: 'wrench'
+    value: [-1,0,0]
+  '4':
+    topic: 'wrench'
+    value: [0,1,0]
+  '6':
+    topic: 'wrench'
+    value: [0,-1,0]
+  '7':
+    topic: 'wrench'
+    value: [0,0,1]
+  '9':
+    topic: 'wrench'
+    value: [0,0,-1]
+
+  # Position keys
+  'y':
+    topic: position_servo1
+    value: 1
+  'h':
+    topic: position_servo1
+    value: -1
+  'g':
+    topic: position_servo2
+    value: 1
+  'j':
+    topic: position_servo2
+    value: -1

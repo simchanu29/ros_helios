@@ -1,0 +1,28 @@
+<launch>
+
+    <include file="$(find ros_usv_simulator)/launch/simulation.launch">
+        <arg name="ns" value="simu"/>
+        <arg name="simu_config_path" value="$(find ros_helios_config)/config/ros_usv_simulator/robot_definition.yaml"/>
+    </include>
+
+    <!--# Tests pour HELIOS, à enlever dans la version finale -->
+
+    <!--autonomie de mission-->
+    <include file="$(find helios_command)/launch/autonomy.launch"/>
+
+    <!--controle commande-->
+    <node name="cmd_interpreter" pkg="helios_command" type="cmd_interpreter.py">
+        <param name="sub_topic" value="cmd_vel"/>
+        <param name="maximum" value="0.7"/>
+        <param name="coeff_rot" value="1.0"/>
+        <param name="coeff_lin" value="1.0"/>
+    </node>
+
+    <!--teleoperation-->
+    <remap from="/cmd_twist" to="/cmd_vel" />
+    <include file="$(find ros_teleop)/launch/teleop.launch">
+        <arg name="config_path" value="$(find ros_helios_config)/config/ros_teleop/keyconfig.yaml"/>
+    </include>
+    <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py"/>
+
+</launch>
