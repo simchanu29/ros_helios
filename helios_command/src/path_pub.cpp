@@ -20,8 +20,19 @@ int main(int argc, char **argv)
     loop.sleep();
 
     // Coordonnées ENU : x=EST y=NORD
-    std::vector<double> coord_x = {0.0,30.0,-100.0,-100.0,100.0,50.0 ,0.0};
-    std::vector<double> coord_y = {0.0,10.0, 30.0 , 80.0 ,150.0,150.0,0.0};
+    double x_origin = 398898;
+    double y_origin = 5354422;
+    std::vector<double> coord_x_loc = {0.0,30.0,-100.0,-100.0,100.0,50.0 ,0.0};
+    std::vector<double> coord_y_loc = {0.0,10.0, 30.0 , 80.0 ,150.0,150.0,0.0};
+
+    std::vector<double> coord_x;
+    std::vector<double> coord_y;
+    for(auto coord : coord_x_loc){
+        coord_x.push_back(coord + x_origin);
+    }
+    for(auto coord : coord_y_loc){
+        coord_y.push_back(coord + y_origin);
+    }
 
     for (int i = 0; i < coord_x.size(); ++i) {
         wp.pose.position.x = coord_x[i];

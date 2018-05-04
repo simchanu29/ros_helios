@@ -8,7 +8,14 @@
     <!--# Tests pour HELIOS, à enlever dans la version finale -->
 
     <!--autonomie de mission-->
-    <include file="$(find helios_command)/launch/autonomy.launch"/>
+    <node name="navigation_autonomy" pkg="helios_command" type="navigation_autonomy.py"/>
+    <node name="regulation" pkg="helios_command" type="regulation" output="screen"/>
+    <node name="navigation" pkg="helios_command" type="navigation"/>
+    <node name="command_plot" pkg="helios_command" type="command_plot.py">
+        <param name="x_init" value="398898" type="double"/>
+        <param name="y_init" value="5354422" type="double"/>
+    </node>
+    <node name="path_pub" pkg="helios_command" type="path_pub"/>
 
     <!--controle commande-->
     <node name="cmd_interpreter" pkg="helios_command" type="cmd_interpreter.py">

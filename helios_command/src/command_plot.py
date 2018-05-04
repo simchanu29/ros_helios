@@ -21,8 +21,8 @@ class Plotter():
         self.pose = Pose()
         self.twist = Twist()
         self.theta = 0.0
-        self.x = 0.0
-        self.y = 0.0
+        self.x = float(rospy.get_param('~x_init', 0.0))
+        self.y = float(rospy.get_param('~y_init', 0.0))
         self.cmd_vx = 0.0
         self.cmd_theta = 0.0
         self.path = [[], []]
@@ -32,8 +32,8 @@ class Plotter():
         # Init plot
         self.win = plt.GraphicsWindow()
         self.fig = self.win.addPlot(title="Display command")
-        self.fig.setXRange(-5, 5)
-        self.fig.setYRange(-5, 5)
+        self.fig.setXRange(self.x - 20, self.x + 20)
+        self.fig.setYRange(self.y - 20, self.y + 20)
 
         # Init path_planned
         self.plt_planned_path = self.fig.plot()
@@ -90,7 +90,8 @@ class Plotter():
         self.plt_planned_path.setData(self.path[0], self.path[1], pen=plt.mkPen('l', width=1))
 
         # print "====== Plotting active path"
-        self.plt_active_path.setData([self.last_wp.x, self.next_wp.x], [self.last_wp.y, self.next_wp.y], pen=plt.mkPen('r', width=2))
+        self.plt_active_path.setData([self.last_wp.x, self.next_wp.x], [self.last_wp.y, self.next_wp.y],
+                                     pen=plt.mkPen('r', width=2))
 
         # print "====== Plotting boat"
         hull = geom.draw_kayak(self.theta, self.x, self.y)
@@ -99,13 +100,14 @@ class Plotter():
         self.plt_trace.setData(self.trace[0], self.trace[1], pen=plt.mkPen('g'))
 
         # print "====== Plotting twist"
-        vec = np.array([[ 0.0, self.cmd_vx * np.cos(self.cmd_theta)],
-                        [ 0.0, self.cmd_vx * np.sin(self.cmd_theta)],
-                        [ 1.0, 1.0]])
+        vec = np.array([[0.0, self.cmd_vx * np.cos(self.cmd_theta)],
+                        [0.0, self.cmd_vx * np.sin(self.cmd_theta)],
+                        [1.0, 1.0]])
         vec = geom.homothetie_vec(vec, self.theta,
                                   self.x, self.y)
         self.plt_twist.setData(vec[0],
                                vec[1], pen=plt.mkPen('b', width=2))
+
 
 if __name__ == '__main__':
     rospy.init_node('command_plot')

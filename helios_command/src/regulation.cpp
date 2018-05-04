@@ -118,7 +118,7 @@ public:
         }
 
         double dist2Line;
-        if( sqrt( pow(bx-ax,2) + pow(bx-ax,2)) != 0){
+        if( sqrt( pow(bx-ax,2) + pow(by-ay,2)) != 0){
             dist2Line = ((bx-ax)*(y-ay) - (by-ay)*(x-ax)) / sqrt( pow(bx-ax,2) + pow(bx-ax,2));
         } else{ dist2Line = 100; }
 
@@ -127,11 +127,11 @@ public:
         const double error = - atan(dist2Line);
         printf("headLine = [%f]\n", headLine);
         printf("error = [%f]\n", error);
-        printf("headLine - error = [%f]\n", headLine + error);
+        printf("headLine - error = [%f]\n", headLine - error);
 
-        const double wantedHead = angle_rad(headLine, error);
+        const double wantedHead = angle_rad(headLine, -error);
 //        const double wantedHead = atan(tan(headLine - atan(dist2Line)));
-        printf("wantedHead = [%f]\n", wantedHead);
+        printf("wantedHead = [%f]\n", wantedHead); // Le cap voulu par rapport au repere global
 
         const double twist = angle_rad( wantedHead,- head)/5.0;
 	    const double tauTwist = 2.0;

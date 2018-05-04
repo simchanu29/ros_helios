@@ -32,8 +32,8 @@ class Model_char(object):
         # Calcul de la différence en absolu
         diff = max(np.abs(lin) + np.abs(ang) - self.max_cmd, 0.0)
 
-        m1 = np.clip(lin - ang - np.sign(lin)*diff, -self.max_cmd, self.max_cmd)
-        m2 = np.clip(lin + ang - np.sign(lin)*diff, -self.max_cmd, self.max_cmd)
+        m2 = np.clip(lin - ang - np.sign(lin)*diff, -self.max_cmd, self.max_cmd)
+        m1 = np.clip(lin + ang - np.sign(lin)*diff, -self.max_cmd, self.max_cmd)
         return [m1, m2]
 
     def cb_max(self, msg):

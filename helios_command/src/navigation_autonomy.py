@@ -8,7 +8,7 @@
 import rospy
 from nav_msgs.msg import Path
 from geometry_msgs.msg import PoseStamped, Pose
-from std_msgs.msg import Int16
+from std_msgs.msg import Int8
 import Utility.geodesy as geod
 
 
@@ -50,19 +50,23 @@ class PathPlanner:
         # 1 : linefollow
         # 2 : stationkeeping
         last_state_wp_harvest = self.wp_harvestable
-        self.wp_harvestable = (msg.data==0)
+        self.wp_harvestable = (msg.data!=0)
+        rospy.loginfo("Cmd received, switching to %d", msg.data)
+        rospy.loginfo("Wp harvestable : %d", self.wp_harvestable)
+        rospy.loginfo("last_state_wp_harvest : %d", last_state_wp_harvest)
 
-        if not last_state_wp_harvest and self.wp_harvestable:
+        if (not last_state_wp_harvest) and self.wp_harvestable:
             rospy.loginfo("cmd_state : sendig last_wp x:%f y:%f new_wp x:%f y:%f", self.last_wp.pose.position.x, self.last_wp.pose.position.y, self.next_wp.pose.position.x, self.next_wp.pose.position.y)
             pub_line.publish(self.current_line)
 
     def check_harvest_wp(self):
-        x0 = self.last_wp.pose.position.x
-        y0 = self.last_wp.pose.position.y
+        x0 = self.pose.position.x
+        y0 = self.pose.position.y
         x1 = self.next_wp.pose.position.x
         y1 = self.next_wp.pose.position.y
 
         dist = geod.dist_m(x0, y0, x1, y1)
+        rospy.loginfo("Distance to harvest, dist=%f", dist)
         if dist<self.dist_harvest:
             rospy.loginfo("Wp can be harvested, dist=%f<%f? & %s", dist, self.dist_harvest, self.wp_harvestable)
             self.publish_line()
@@ -85,7 +89,7 @@ if __name__ == '__main__':
     # Subscriber
     rospy.Subscriber('path', Path, path_planner.cb_path)
     rospy.Subscriber('pose_est', Pose, path_planner.cb_pose)
-    rospy.Subscriber('cmd_state', Int16, path_planner.cb_cmd_state)
+    rospy.Subscriber('cmd_state', Int8, path_planner.cb_cmd_state)
 
     # Publisher
     pub_line = rospy.Publisher('line', Path, queue_size=1)

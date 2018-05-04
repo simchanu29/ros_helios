@@ -87,10 +87,10 @@ Coordinates latlon2meters(double lat, double lon){
     lat *= DEG_TO_RAD;
     lon *= DEG_TO_RAD;
 
-    pj_transform(pj_latlong, pj_utm30N, 1, 1, &lat, &lon, nullptr);
+    pj_transform(pj_latlong, pj_utm30N, 1, 1, &lon, &lat, nullptr);
 
     //printf("X: %lf \nY: %lf\n", x, y);
-    coord.x = lat;
-    coord.y = lon;
+    coord.x = lon;
+    coord.y = lat;
     return coord;
 }
