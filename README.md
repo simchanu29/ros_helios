@@ -1,5 +1,5 @@
 # ros_helios_hardware
-Hardware package for the catamaran HELIOS
+Hardware metapackage for the catamaran HELIOS
 
 ![Status](https://img.shields.io/badge/Status-In%20Development-red.svg)
 ![ROS](https://img.shields.io/badge/ROS-Kinetic--Kame-green.svg)
