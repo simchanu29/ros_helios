@@ -7,30 +7,23 @@ Hardware package for the catamaran HELIOS
 ### Installation
 On part du principe que les packages de base de ROS sont installés.
 
-##### Configuration du workspace
-Dans le dossier où vous souhaitez créer votre workspace.
-```
-mkdir -p $nomdevotrechoix/src
-cd $nomdevotrechoix/src
-catkin_init_workspace
-```
+1. Clonez ce stack dans un workspace ROS
 
-##### Installation des packages ROS
-
-Installez les paquets suivants
+2. Installez les paquets suivants nécessaires : 
 ```
-sudo apt-get install ros-kinetic-nmea-navsat-driver ros-kinetic-hokuyo-node ros-kinetic-usb-cam ros-kinetic-rviz-imu-plugin ros-kinetic-laser-assembler
+sudo apt install ros-kinetic-nmea-navsat-driver ros-kinetic-usb-cam
 ```
 
-Lancez `install.sh` pour configurer les entrées du PC.
+3. Installez si vous le souhaitez ces paquets recommandés (pour le debug) : 
+ ```
+ sudo apt install ros-kinetic-hokuyo-node ros-kinetic-rviz-imu-plugin ros-kinetic-laser-assembler
+ ```
 
-Pour l'installation du leddar, voir le README dans le dossier correspondant
-
-##### Configuration des règles udev
-Ces règles servent à identifier les appareils se connectant en USB. Elles sont situées dans le dossier `install_files`. Il faut le déplacer dans `/etc/udev/rules.d/`.
+4. Configuration des règles udev
+Copiez les règles udev du dossier install_files vers l'endoita approrié sinon lancez `install.sh` pour configurer automatiquement. WARNING : ne fonctionne que sous Ubuntu 16+. Ce script déplace des règles udev, initialise le workspace
 
 ##### Outils de debug externes
-Habituellement je les met dans un dossier `Logiciels`
+Habituellement je les met dans un dossier `Logiciels` dans `/home/$USER`
 ```
 cd && mkdir Logiciels && cd Logiciels
 ```
@@ -47,33 +40,35 @@ Puis suivez les instructions du README.txt.
 ouvrez un navigateur et allez sur `https://files.sbg-systems.com/s/xg0mpvooQVqBgZR/authenticate`
 Mettez les identifiants SBG et téléchargez le SDK. Pour calibrer la SBG, il faut passer sou Windows et télécharger le sbgControl center avec ces même identifiants.
 
-### Interfaces
-##### Entrées
-##### Sorties
+### Utilisation
 
-### Appareils
+Tout les fichiers de configuration sont contenu dans le package `ros_helios_config`. Plusieurs modes sont possibles : 
+ - `helios_simu.launch` pour lancer la simulation avec téléoperation
+
+### Appareils supportés
 Le schéma d'architecture physique est disponible en ouvrant le fichier `cataArchiPhy.xml` avec la webapp draw.io
 
-##### Polulu Maestro
+ - Polulu Maestro
 Carte d'inteface capteur et actionneurs
 
-__Nécessite :__ `usb_cam`
+__Nécessite :__ `ros_maestro`
 
-##### Camera
+ - Attopilot
+capteur courant et tension.
+
+__Nécessite :__ `ros_maestro`
+
+ - Camera
 Camera branché en USB
 
 __Nécessite :__ `usb_cam`
 
-##### GPS RTK
-GPS RTK branchée en USB.
+ - GPS
+GPS branché en USB.
 
 __Nécessite :__ `nmea_navsat_driver`
 
-##### Hokuyo
-
-__Nécessite :__ `hokuyo_node`
-
-##### IMU (SBG)
+ - IMU (SBG)
 
 __Nécessite :__ `sbg_driver` version 1.0.7
 
@@ -82,11 +77,4 @@ __Tests :__
  1. Lancer `roslaunch sbg_driver sbg_ellipse.launch` et `rviz`.
  2. Dans Rviz ajouter une imu et spécifier le topic `/imu`
 
-##### Pololu Maestro pwm board
-Carte pololu pour contrôler 2 moteurs T200 de BlueRobotics
-
- - Channel 0 : propulseur gauche
- - Channel 1 : propulseur droit
-
-### Notes de developpement
-ros_helios_config ne devrait pas être un repository séparé de ros_helios_hardware. Il faudrait l'enlever en tant que submodule et ajouter directement les fichiers. C'est tout simplement parce-que on utilisera pas la config d'Helios en dehors de ros_helios_hardware.
+### Troubleshooting
