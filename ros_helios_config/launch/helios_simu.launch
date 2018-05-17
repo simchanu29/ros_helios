@@ -7,6 +7,16 @@
 
     <!--# Tests pour HELIOS, à enlever dans la version finale -->
 
+    <!-- Attopilots -->
+    <node name="attopilot1" pkg="ros_maestro" type="attopilot_driver.py">
+        <param name="~volt_topic" value="battery1_voltage_raw"/>
+        <param name="~curr_topic" value="battery1_current_raw"/>
+    </node>
+    <node name="attopilot2" pkg="ros_maestro" type="attopilot_driver.py">
+        <param name="~volt_topic" value="battery2_voltage_raw"/>
+        <param name="~curr_topic" value="battery2_current_raw"/>
+    </node>
+
     <!--autonomie de mission-->
     <node name="navigation_autonomy" pkg="helios_command" type="navigation_autonomy.py"/>
     <node name="regulation" pkg="helios_command" type="regulation" output="screen"/>

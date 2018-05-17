@@ -79,7 +79,7 @@ if __name__ == '__main__':
     rospy.Subscriber(sub , Twist, cb_pwm)
     rospy.Subscriber('cmd_max_speed' , Float64, char.cb_max)
 
-    pub_pwm = rospy.Publisher('pwm_cmd', PwmCmd, queue_size=1)
+    pub_pwm = rospy.Publisher('cmd_pwm', PwmCmd, queue_size=1)
 
     # HOTFIX pour fabrice BathyBoatNav TODO a mettre propre
     pub_mot_left = rospy.Publisher('left_mot', Int64, queue_size=1000)

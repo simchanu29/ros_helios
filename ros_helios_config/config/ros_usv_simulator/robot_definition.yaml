@@ -30,8 +30,8 @@ device_types:
   attopilot:
     node_package: 'ros_usv_simulator'
     node_type: 'simu_attopilot.py'
-    current_gain: 13.89
-    voltage_gain: 49
+    voltage_gain: 0.067529296875 #13.83 /5*1024/13.84 => 5*13.83/1024
+    current_gain: 0.2431640625 #49.8 49.8*5.0/1024
 
   battery_lion_24v:
     node_package: 'ros_usv_simulator'
