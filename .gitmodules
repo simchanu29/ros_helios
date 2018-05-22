@@ -1,9 +1,9 @@
 [submodule "ros_teleop"]
-	path = ros_teleop
+	path = helios_hardware/ros_teleop
 	url = http://github.com/simchanu29/ros_teleop
 [submodule "ros_maestro"]
-	path = ros_maestro
+	path = helios_hardware/ros_maestro
 	url = https://github.com/simchanu29/ros_maestro.git
 [submodule "ros_usv_simulator"]
-	path = ros_usv_simulator
+	path = helios_hardware/ros_usv_simulator
 	url = https://github.com/simchanu29/ros_usv_simulator.git
