@@ -5,7 +5,7 @@
         <arg name="config_path" value="$(find ros_helios_config)/config/ros_maestro/pwmconfig.yaml"/>
     </include>
 
-    <node name="cmd_interpreter" pkg="helios_command" type="cmd_interpreter.py"/>
+    <node name="cmd_interpreter" pkg="helios_navigation" type="cmd_interpreter.py"/>
 
     <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver"/>
 
