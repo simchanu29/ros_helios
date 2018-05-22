@@ -50,12 +50,12 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
-  <exec_depend>ros_usv_simulator</exec_depend>
-  <exec_depend>ros_maestro</exec_depend>
-  <exec_depend>nmea_navsat_driver</exec_depend>
-  <exec_depend>sbg_driver</exec_depend>
-  <exec_depend>ros_teleop</exec_depend>
-  <exec_depend>usb_cam</exec_depend>
+  <run_depend>ros_usv_simulator</run_depend>
+  <run_depend>ros_maestro</run_depend>
+  <run_depend>nmea_navsat_driver</run_depend>
+  <run_depend>sbg_driver</run_depend>
+  <run_depend>ros_teleop</run_depend>
+  <run_depend>usb_cam</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
