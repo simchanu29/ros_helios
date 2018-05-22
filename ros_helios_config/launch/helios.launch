@@ -31,19 +31,27 @@
     </node>
 
     <!--capteurs externes-->
-    <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver">
-         <param name="port" value="/dev/gps"/>
-         <param name="baud" value="9600"/>
-    </node>
+    <group ns="gps">
+      <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver">
+           <param name="port" value="/dev/gps"/>
+           <param name="baud" value="9600"/>
+      </node>
+    </group>
 
-    <include file="$(find sbg_driver)/launch/sbg_ellipse.launch">
-        <arg name="port" value="sbg"/>
+    <include file="$(find sbg_driver)/launch/sbg_ellipseE.launch">
     </include>
+
+    <!-- Fusion senseurs -->
+    <node name="navigation" pkg="helios_navigation" type="navigation"></node>
 
     <!--teleoperation-->
     <include file="$(find ros_teleop)/launch/teleop.launch">
         <arg name="config_path" value="$(find ros_helios_config)/config/ros_teleop/keyconfig.yaml"/>
     </include>
     <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py"></node>
+
+
+    <!-- plot -->
+    <!-- <node name="monitor" pkg="helios_command" type="command_plot.py"></node> -->
 
 </launch>
