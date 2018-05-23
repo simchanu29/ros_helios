@@ -1,0 +1,10 @@
+<launch>
+    <arg name="sub_topic"/>
+
+    <node name="cmd_interpreter" pkg="helios_navigation" type="cmd_interpreter.py">
+        <param name="sub_topic" value="$(arg sub_topic)"/>
+    </node>
+
+    <node name="navigation" pkg="helios_command" type="navigation"/>
+
+</launch>
