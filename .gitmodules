@@ -16,3 +16,6 @@
 [submodule "helios_control/helios_command2/opencpn2ros"]
 	path = helios_control/helios_command2/opencpn2ros
 	url = https://github.com/schvarcz/OpenCPN2ROS
+[submodule "helios_control/helios_command2/blueview_ros"]
+	path = helios_control/helios_command2/blueview_ros
+	url = https://github.com/schvarcz/blueview_ros.git
