@@ -1,0 +1,17 @@
+<launch>
+
+    <include file="$(find ros_maestro)/launch/maestro.launch">
+        <arg name="port" value="/dev/polulu_servo_serial"/>
+        <arg name="config_path" value="$(find ros_helios_config)/config/ros_maestro/pwmconfig.yaml"/>
+    </include>
+
+    <node name="cmd_interpreter" pkg="helios_navigation" type="cmd_interpreter.py"/>
+
+    <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver"/>
+
+    <include file="$(find ros_teleop)/launch/teleop.launch"/>
+    <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py">
+        <remap from="cmd_vel" to="cmd_twist"/>
+    </node>
+
+</launch>
