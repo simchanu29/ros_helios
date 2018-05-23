@@ -49,8 +49,6 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
 
   <buildtool_depend>catkin</buildtool_depend>
-  <!--<build_depend>roscpp</build_depend>-->
-  <!--<build_depend>rospy</build_depend>-->
   <run_depend>ros_usv_simulator</run_depend>
   <run_depend>ros_maestro</run_depend>
   <run_depend>nmea_navsat_driver</run_depend>
