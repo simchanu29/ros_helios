@@ -7,3 +7,6 @@
 [submodule "ros_usv_simulator"]
 	path = helios_hardware/ros_usv_simulator
 	url = https://github.com/simchanu29/ros_usv_simulator.git
+[submodule "sbg_ros_driver"]
+	path = sbg_ros_driver
+	url = https://github.com/ENSTABretagneRobotics/sbg_ros_driver

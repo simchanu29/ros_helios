@@ -45,7 +45,7 @@ key_config:
     'switch_teleop':
       'type': 'switch_teleop'
 
-    'twist':
+    'vel':
       'type': 'twist'
       'range_lin': 1.0
       'range_ang': 1.0
@@ -75,28 +75,29 @@ key_config:
 
     # Twist keys
     ' ':
-      topic: 'twist'
+      topic: 'vel'
       value: ['STOP','STOP','STOP']
     'r':
-      topic: 'twist'
+      topic: 'vel'
       value: ['BACK','BACK','BACK']
     'z':
-      topic: 'twist'
+      topic: 'vel'
       value: [1,0,0]
     's':
-      topic: 'twist'
+
+      topic: 'vel'
       value: [-1,0,0]
     'q':
-      topic: 'twist'
+      topic: 'vel'
       value: [0,0,1]
     'd':
-      topic: 'twist'
+      topic: 'vel'
       value: [0,0,-1]
     'a':
-      topic: 'twist'
+      topic: 'vel'
       value: [0,0,1]
     'e':
-      topic: 'twist'
+      topic: 'vel'
       value: [0,0,-1]
 
     # Cmd state keys

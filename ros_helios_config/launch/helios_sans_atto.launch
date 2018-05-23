@@ -19,24 +19,13 @@
 
     <node name="relay_toogle" pkg="ros_maestro" type="relay_driver.py"/>
 
-    <!--capteurs internes-->
-    <node name="attopilot1" pkg="ros_maestro" type="attopilot_driver.py">
-        <param name="~volt_topic" value="battery1_voltage_raw"/>
-        <param name="~curr_topic" value="battery1_current_raw"/>
-    </node>
-
-    <node name="attopilot2" pkg="ros_maestro" type="attopilot_driver.py">
-        <param name="~volt_topic" value="battery2_voltage_raw"/>
-        <param name="~curr_topic" value="battery2_current_raw"/>
-    </node>
-
     <!--capteurs externes-->
-    <group ns="gps">
+    <!-- <group ns="gps">
       <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver">
            <param name="port" value="/dev/gps"/>
            <param name="baud" value="9600"/>
       </node>
-    </group>
+    </group> -->
 
     <include file="$(find sbg_driver)/launch/sbg_ellipseE.launch">
     </include>
@@ -48,7 +37,7 @@
     <include file="$(find ros_teleop)/launch/teleop.launch">
         <arg name="config_path" value="$(find ros_helios_config)/config/ros_teleop/keyconfig.yaml"/>
     </include>
-    <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py"></node>
+    <!-- <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py"></node> -->
 
 
     <!-- plot -->

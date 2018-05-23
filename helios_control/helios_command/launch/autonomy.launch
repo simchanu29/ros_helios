@@ -1,4 +1,4 @@
 <launch>
-    <node name="navigation_autonomy" pkg="helios_command" type="navigation_autonomy.py" output="screen"/>
+    <node name="navigation_autonomy" pkg="helios_command" type="navigation_autonomy.py"/>
     <node name="regulation" pkg="helios_command" type="regulation"/>
 </launch>
