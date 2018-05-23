@@ -5,7 +5,7 @@
         <arg name="config_path" value="$(find ros_helios_config)/config/ros_maestro/pwmconfig.yaml"/>
     </include>
 
-    <node name="attopilot1" pkg="ros_maestro" type="attopilot_driver.py">
+    <!-- <node name="attopilot1" pkg="ros_maestro" type="attopilot_driver.py">
       <param name="~volt_topic" value="battery1_voltage_raw"/>
       <param name="~curr_topic" value="battery1_current_raw"/>
     </node>
@@ -13,7 +13,7 @@
     <node name="attopilot2" pkg="ros_maestro" type="attopilot_driver.py">
       <param name="~volt_topic" value="battery2_voltage_raw"/>
       <param name="~curr_topic" value="battery2_current_raw"/>
-    </node>
+    </node> -->
 
     <node name="relay_toogle" pkg="ros_maestro" type="relay_driver.py"/>
 
