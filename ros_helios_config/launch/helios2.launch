@@ -1,7 +1,7 @@
 <launch>
 
     <!--autonomie de mission-->
-    <include file="$(find helios_command2)/launchers/helios_autonomous.launch"/>
+    <include file="$(find helios_autonomous)/launchers/helios_autonomous.launch"/>
 
     <!--controle commande-->
     <node name="cmd_interpreter" pkg="helios_navigation" type="cmd_interpreter.py">
