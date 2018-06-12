@@ -124,7 +124,7 @@ public:
 
         printf("dist2Line = [%f]\n",dist2Line);
 
-        const double error = - atan(dist2Line);
+        const double error = atan(dist2Line);
         printf("headLine = [%f]\n", headLine);
         printf("error = [%f]\n", error);
         printf("headLine - error = [%f]\n", headLine - error);
@@ -133,6 +133,8 @@ public:
 //        const double wantedHead = atan(tan(headLine - atan(dist2Line)));
         printf("wantedHead = [%f]\n", wantedHead); // Le cap voulu par rapport au repere global
 
+        // Commande finale
+        // TODO implémenter un PID
         const double twist = angle_rad( wantedHead,- head)/5.0;
 	    const double tauTwist = 2.0;
         cmd_vel.angular.z = twist;

@@ -39,10 +39,10 @@ class Plotter():
         self.plt_planned_path = self.fig.plot()
         # Init path_active
         self.plt_active_path = self.fig.plot()
-        # Init boat
-        self.plt_boat = self.fig.plot()
         # Init trace
         self.plt_trace = self.fig.plot()
+        # Init boat
+        self.plt_boat = self.fig.plot()
         # Init cmd
         self.plt_twist = self.fig.plot()
 
@@ -63,6 +63,8 @@ class Plotter():
         self.cmd_theta = self.twist.angular.z
 
     def update_planned_path(self, msg):
+        self.path[0] = []
+        self.path[1] = []
         for pose in msg.poses:
             self.path[0].append(pose.pose.position.x)
             self.path[1].append(pose.pose.position.y)
@@ -86,13 +88,6 @@ class Plotter():
     def process(self):
         # Les angles représentés ici sont en ENU
 
-        # print "====== Plotting planned path"
-        self.plt_planned_path.setData(self.path[0], self.path[1], pen=plt.mkPen('l', width=1))
-
-        # print "====== Plotting active path"
-        self.plt_active_path.setData([self.last_wp.x, self.next_wp.x], [self.last_wp.y, self.next_wp.y],
-                                     pen=plt.mkPen('r', width=2))
-
         # print "====== Plotting boat"
         hull = geom.draw_kayak(self.theta, self.x, self.y)
         self.plt_boat.setData(hull[0], hull[1], pen=plt.mkPen('l', width=2))
@@ -100,13 +95,21 @@ class Plotter():
         self.plt_trace.setData(self.trace[0], self.trace[1], pen=plt.mkPen('g'))
 
         # print "====== Plotting twist"
-        vec = np.array([[0.0, self.cmd_vx * np.cos(self.cmd_theta)],
-                        [0.0, self.cmd_vx * np.sin(self.cmd_theta)],
+        angle_coeff = 1.0
+        vec = np.array([[0.0, self.cmd_vx * np.cos(self.cmd_theta*angle_coeff)],
+                        [0.0, self.cmd_vx * np.sin(self.cmd_theta*angle_coeff)],
                         [1.0, 1.0]])
         vec = geom.homothetie_vec(vec, self.theta,
                                   self.x, self.y)
         self.plt_twist.setData(vec[0],
                                vec[1], pen=plt.mkPen('b', width=2))
+
+        # print "====== Plotting planned path"
+        self.plt_planned_path.setData(self.path[0], self.path[1], pen=plt.mkPen('l', width=1))
+
+        # print "====== Plotting active path"
+        self.plt_active_path.setData([self.last_wp.x, self.next_wp.x], [self.last_wp.y, self.next_wp.y],
+                                     pen=plt.mkPen('r', width=2))
 
 
 if __name__ == '__main__':
