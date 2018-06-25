@@ -1,4 +1,6 @@
 <launch>
+    <!--drivers-->
+    <include file="$(find ros_helios_config)/launch/drivers.launch"/>
 
     <!--autonomie de mission-->
     <include file="$(find helios_command)/launch/autonomy.launch"/>
@@ -19,22 +21,11 @@
 
     <node name="relay_toogle" pkg="ros_maestro" type="relay_driver.py"/>
 
-    <!--capteurs externes-->
-    <!-- <group ns="gps">
-      <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver">
-           <param name="port" value="/dev/gps"/>
-           <param name="baud" value="9600"/>
-      </node>
-    </group> -->
-
-    <include file="$(find sbg_driver)/launch/sbg_ellipseE.launch">
-    </include>
-
     <!-- Fusion senseurs -->
-    <node name="navigation" pkg="helios_navigation" type="navigation"></node>
+    <node name="navigation" pkg="helios_navigation" type="navigation"/>
 
     <!--teleoperation-->
-    <include file="$(find ros_teleop)/launch/teleop.launch">
+    <include file="$(find ros_helios_config)/launch/teleop.launch">
         <arg name="config_path" value="$(find ros_helios_config)/config/ros_teleop/keyconfig.yaml"/>
     </include>
     <!-- <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py"></node> -->

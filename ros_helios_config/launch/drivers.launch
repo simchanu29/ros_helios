@@ -1,0 +1,19 @@
+<launch>
+    <!--driver actionneurs-->
+
+    <include file="$(find ros_maestro)/launch/maestro.launch">
+        <arg name="port" value="/dev/pololu_servo_serial"/>
+        <arg name="config_path" value="$(find ros_helios_config)/config/ros_maestro/pwmconfig.yaml"/>
+    </include>
+
+    <!--capteurs externes-->
+    <group ns="gps">
+      <node name="gps" pkg="nmea_navsat_driver" type="nmea_serial_driver">
+           <param name="port" value="/dev/gps"/>
+           <param name="baud" value="9600"/>
+      </node>
+    </group>
+
+    <include file="$(find sbg_driver)/launch/sbg_ellipseE.launch"/>
+
+</launch>

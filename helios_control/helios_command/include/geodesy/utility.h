@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <proj_api.h>
+#include <iostream>
 
 #define CONVERSION_FACTOR_GPS 1852.0 // in meters/min
 #define RAD_2_DEG 1.0/M_PI*180.0
@@ -17,10 +18,6 @@ static double angle_deg(double a1,double a2){
 static double angle_rad(double a1,double a2){
     return (fmod( a1 + a2 + 3*M_PI, 2*M_PI ) - M_PI);
 }
-
-//static double enu2ned_yaw_rad(){
-//
-//}
 
 static double ned2enu_yaw_rad(double yaw){
     return angle_rad(M_PI/2,- yaw);
@@ -55,13 +52,16 @@ static double distance(double x1, double y1, double x2, double y2){
     return sqrt( pow(x2-x1,2) + pow(y2-y1,2) );
 }
 
+//static double distance(std::vector<double> wp1, std::vector<double> wp2){
+//    return sqrt( pow(wp2[0]-wp1[0],2) + pow(wp2[1]-wp1[1],2) );
+//}
 
 struct Coordinates{
     double x;
     double y;
 };
 
-Coordinates latlon2meters(double lat, double lon){
+static Coordinates latlon2meters(double lat, double lon){
 
     Coordinates coord;
     projPJ pj_lambert, pj_latlong, pj_utm30N;

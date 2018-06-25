@@ -18,8 +18,11 @@ class PathPlanner:
         self.pose = Pose()
         self.last_wp = PoseStamped()
         self.next_wp = PoseStamped()
+
         self.current_line = Path()
         self.current_line.poses = [self.last_wp, self.next_wp]
+        self.current_line.header.frame_id = 'global'
+
         self.path = Path()
         self.path.poses = self.current_line.poses
         self.line_number = 0

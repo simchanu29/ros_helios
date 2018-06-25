@@ -75,7 +75,7 @@ if __name__ == '__main__':
     coeff_lin = rospy.get_param('~coeff_lin', "1.0")
     char = Model_char(float(maximum), float(coeff_rot), float(coeff_lin))
 
-    sub = rospy.get_param("~sub_topic", "cmd_vel")
+    sub = rospy.get_param("~sub_topic", "cmd_thrust")
     rospy.Subscriber(sub , Twist, cb_pwm)
     rospy.Subscriber('cmd_max_speed' , Float64, char.cb_max)
 

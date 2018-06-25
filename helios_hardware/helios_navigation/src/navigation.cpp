@@ -9,12 +9,29 @@
 #include "geodesy/utility.h"
 #include "tf/transform_datatypes.h"
 #include "nav_msgs/Path.h"
+#include "tf/tf.h"
+
+#include <geometry_msgs/TransformStamped.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <visualization_msgs/Marker.h>
 
 #include "geodesy/utility.h"
 //#include <proj_api.h>
 
 //#include <iostream>
 //#include <math.h>
+
+geometry_msgs::Vector3 invRotateVector3Msg(geometry_msgs::Quaternion rotation, geometry_msgs::Vector3 vector){
+    tf::Quaternion rotationTF;
+    tf::quaternionMsgToTF(rotation, rotationTF);
+    tf::Vector3 vectorTF;
+    tf::vector3MsgToTF(vector, vectorTF);
+    tf::Vector3 rotated_vectorTF = tf::quatRotate(rotationTF.inverse(), vectorTF);
+    geometry_msgs::Vector3 rotated_vector;
+    tf::vector3TFToMsg(rotated_vectorTF, rotated_vector);
+    return rotated_vector;
+}
 
 class Navigation
 {
@@ -28,6 +45,7 @@ public:
         // Publishers
         pose_pub = node.advertise<geometry_msgs::Pose>("pose_est", 1);
         twist_pub = node.advertise<geometry_msgs::Twist>("twist_est", 1);
+        marker_pub = node.advertise<visualization_msgs::Marker>("rviz_robot", 1);
 
         // Internal variables
         twist.angular.x = 0;
@@ -95,12 +113,58 @@ public:
         pose.orientation = imu.orientation;
 
         // speed : linear
-        twist.linear.x = gpsvel.twist.linear.x;
-        twist.linear.y = gpsvel.twist.linear.y;
-        twist.linear.z = gpsvel.twist.linear.z;
+        // Passage de la vitesse gps dans un repere local
+
+        ROS_INFO("gpsvel.twist.linear.x = %f", gpsvel.twist.linear.x);
+        ROS_INFO("gpsvel.twist.linear.y = %f", gpsvel.twist.linear.y);
+        ROS_INFO("gpsvel.twist.linear.z = %f", gpsvel.twist.linear.z);
+        twist.linear = invRotateVector3Msg(pose.orientation, gpsvel.twist.linear);
+        ROS_INFO("twist.linear.x = %f", twist.linear.x);
+        ROS_INFO("twist.linear.y = %f", twist.linear.y);
+        ROS_INFO("twist.linear.z = %f", twist.linear.z);
+
+//        twist.linear.x = gpsvel.twist.linear.x;
+//        twist.linear.y = gpsvel.twist.linear.y;
+//        twist.linear.z = gpsvel.twist.linear.z;
 
         // speed : angular
         twist.angular = imu.angular_velocity;
+
+        // Broadcast robot tf
+        transformStamped.header.stamp = ros::Time::now();
+        transformStamped.header.frame_id = "global";
+        transformStamped.child_frame_id = "robot";
+        transformStamped.transform.translation.x = pose.position.x;
+        transformStamped.transform.translation.y = pose.position.y;
+        transformStamped.transform.translation.z = pose.position.z;
+        tf2::Quaternion q;
+        transformStamped.transform.rotation.x = pose.orientation.x;
+        transformStamped.transform.rotation.y = pose.orientation.y;
+        transformStamped.transform.rotation.z = pose.orientation.z;
+        transformStamped.transform.rotation.w = pose.orientation.w;
+
+        // Publish Marker
+        robot.header.frame_id = "robot";
+        robot.header.stamp = ros::Time::now();
+        robot.ns = "";
+        robot.id = 0;
+        robot.type = visualization_msgs::Marker::ARROW;
+        robot.action = visualization_msgs::Marker::ADD;
+        robot.pose.position.x = 0;
+        robot.pose.position.y = 0;
+        robot.pose.position.z = 0;
+        robot.pose.orientation.x = 0;
+        robot.pose.orientation.y = 0;
+        robot.pose.orientation.z = 0;
+        robot.pose.orientation.w = 0;
+        robot.scale.x = 10.0;
+        robot.scale.y = 2.0;
+        robot.scale.z = 2.0;
+        robot.color.r = 0.0f;
+        robot.color.g = 1.0f;
+        robot.color.b = 0.0f;
+        robot.color.a = 1.0;
+        robot.lifetime = ros::Duration();
     }
 
     void spin(){
@@ -117,6 +181,8 @@ public:
                 // publish data
                 pose_pub.publish(pose);
                 twist_pub.publish(twist);
+                br.sendTransform(transformStamped);
+                marker_pub.publish(robot);
 
             loop.sleep();
 
@@ -135,6 +201,7 @@ private:
     // Publishers
     ros::Publisher pose_pub;
     ros::Publisher twist_pub;
+    ros::Publisher marker_pub;
 
     // Internal variables
     geometry_msgs::Pose pose;
@@ -143,6 +210,12 @@ private:
     sensor_msgs::Imu imu;
     sensor_msgs::NavSatFix gpsfix;
     geometry_msgs::TwistStamped gpsvel;
+
+    visualization_msgs::Marker robot;
+
+    // tf
+    tf2_ros::TransformBroadcaster br;
+    geometry_msgs::TransformStamped transformStamped;
 
     Coordinates meters_coord;
 };
